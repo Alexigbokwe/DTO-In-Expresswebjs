@@ -29,12 +29,11 @@ class ContextMapper {
   }
 
   ValidateRecord(validator, context) {
-    let validate = validator;
-    if (validate.success == true) {
-      validate.data = context;
-      return validate;
+    if (validator.success == true) {
+      validator.data = context;
+      return validator;
     } else {
-      return validate;
+      return validator;
     }
   }
 }
