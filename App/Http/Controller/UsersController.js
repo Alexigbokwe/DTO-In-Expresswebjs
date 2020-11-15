@@ -1,19 +1,21 @@
 "use strict";
-const __repository = use("UsersRepo");
 const UserCreateDto = require("@Dto/Users/UserCreateDto");
 const UserReadDto = require("@Dto/Users/UserReadDto");
 const UserUpdateDto = require("@Dto/Users/UserUpdateDto");
 
 class UsersController {
+  constructor({ UsersRepo }) {
+    this.__repository = UsersRepo;
+  }
   /**
    * Display a listing of the resource.
    * @endPoint "api/user"
    * @verb "GET"
    * @return Response
    */
-  async index(req, res, next) {
+  index = async (req, res, next) => {
     try {
-      return await __repository
+      return await this.__repository
         .GetAllUsers()
         .then((result) => {
           let responseData = new UserReadDto(result).ReadData();
@@ -25,7 +27,7 @@ class UsersController {
     } catch (error) {
       return next(error);
     }
-  }
+  };
 
   /**
    * Store a newly created resource in storage.
@@ -34,12 +36,12 @@ class UsersController {
    * @param  Request  request
    * @return Response
    */
-  async store(req, res, next) {
+  store = async (req, res, next) => {
     try {
       let data = new UserCreateDto(req.body).ReadData();
       let status = data.find((item) => item.success == true);
       if (status !== null) {
-        return await __repository
+        return await this.__repository
           .CreateNewUser(status.data)
           .then((result) => {
             let responseData = new UserReadDto(result).ReadData();
@@ -54,7 +56,7 @@ class UsersController {
     } catch (error) {
       return next(error);
     }
-  }
+  };
 
   /**
    * Display the specified resource.
@@ -63,9 +65,9 @@ class UsersController {
    * @param  int  id
    * @return Response
    */
-  async show(req, res, next) {
+  show = async (req, res, next) => {
     try {
-      return __repository
+      return this.__repository
         .GetUserById(req.params.Id)
         .then((result) => {
           let responseData = new UserReadDto(result).ReadData();
@@ -77,7 +79,7 @@ class UsersController {
     } catch (error) {
       return next(error);
     }
-  }
+  };
 
   /**
    * Update the specified resource in storage.
@@ -86,15 +88,15 @@ class UsersController {
    * @param  int  id
    * @return Response
    */
-  async update(req, res, next) {
+  update = async (req, res, next) => {
     try {
-      return await __repository
+      return await this.__repository
         .GetUserById(req.params.Id)
         .then((modelFromRepo) => {
           let data = new UserUpdateDto(modelFromRepo, req.body).ReadData();
           let status = data.find((item) => item.success == true);
           if (status !== null) {
-            __repository
+            this.__repository
               .UpdateUser(req.params.Id, status.data)
               .then((result) => {
                 let responseData = new UserReadDto(result).ReadData();
@@ -113,7 +115,7 @@ class UsersController {
     } catch (error) {
       return next(error);
     }
-  }
+  };
 
   /**
    * Remove the specified resource from storage.
@@ -122,9 +124,9 @@ class UsersController {
    * @param  int  id
    * @return Response
    */
-  async destroy(req, res, next) {
+  destroy = async (req, res, next) => {
     try {
-      return await __repository
+      return await this.__repository
         .DeleteUser(req.params.Id)
         .then((result) => {
           res.status(204).json({ payload: result });
@@ -135,7 +137,7 @@ class UsersController {
     } catch (error) {
       return next(error);
     }
-  }
+  };
 }
 
-module.exports = new UsersController();
+module.exports = UsersController;

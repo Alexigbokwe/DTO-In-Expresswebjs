@@ -19,7 +19,11 @@ module.exports = {
 | Where userService is the service file name userService.js
 |
 */
-  resolverBox: ["./App/Service/**/**/*.js", "./App/Repository/**/**/*.js"],
+  resolverBox: [
+    pathTo + "/App/Http/Controller/**/**/*.js",
+    pathTo + "/App/Service/**/**/*.js",
+    pathTo + "/App/Repository/**/**/*.js",
+  ],
 
   /*
 |--------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 const UserModel = require("@model/User_model");
 
-class UserRepo {
+class UsersRepo {
   async GetAllUsers() {
     return await new Promise((resolve) => {
       let allUsers = UserModel.query();
@@ -44,4 +44,4 @@ class UserRepo {
   }
 }
 
-module.exports = UserRepo;
+module.exports = UsersRepo;
